@@ -15,4 +15,4 @@ Arrays are the data structures used to store multiple elements and used by sever
 
 ### 2. Improved Bubble Sort
 - The problem with this sorting is what if the arrays get sorted in the first run, then why waste time running all the rest iterations. So better keep a track if there's no swapping in one complete iteration break the damn loop and enjoy your coding...
-- Refer [Code](/dsa-dojo/practice/arrays/improved_bubble_sort.c) for the proper understanding.
+- Refer [Code](../practice/arrays/improved_bubble_sort.c) for the proper understanding.
