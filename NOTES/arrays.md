@@ -10,9 +10,17 @@ Arrays are the data structures used to store multiple elements and used by sever
 - if n is the number of elements in an array then loop runs n-1 times. 
 - refer : [Bubble Sort](https://www.w3schools.com/dsa/dsa_algo_bubblesort.php) for better understanding. 
 - disadvantage - if the array becomes sorted after before n-1 interations then also as per the conventional alogirthm flow the loop will run for n-1 times. So that needs to be fixed.
+- Refer [Code](dsa-dojo/practice/arrays/bubble_sort.c) for the proper understanding via code.
 
 ---
 
 ### 2. Improved Bubble Sort
 - The problem with this sorting is what if the arrays get sorted in the first run, then why waste time running all the rest iterations. So better keep a track if there's no swapping in one complete iteration break the damn loop and enjoy your coding...
-- Refer [Code](dsa-dojo/practice/arrays/improved_bubble_sort.c) for the proper understanding.
+- Refer [Code](dsa-dojo/practice/arrays/improved_bubble_sort.c) for the proper understanding via code.
+
+---
+
+### 3. Selection Sort
+- This algorithm works in a similar manner to the bubble sort. However, it arranges the smallest elements in an array to the beginning and then this chain follows up.
+
+- Refer [Code](dsa-dojo/practice/arrays/)
