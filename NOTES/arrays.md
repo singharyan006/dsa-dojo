@@ -23,4 +23,4 @@ Arrays are the data structures used to store multiple elements and used by sever
 ### 3. Selection Sort
 - This algorithm works in a similar manner to the bubble sort. However, it arranges the smallest elements in an array to the beginning and then this chain follows up.
 
-- Refer [Code](dsa-dojo/practice/arrays/)
+- Refer [Code](dsa-dojo/practice/arrays/) for better understanding
