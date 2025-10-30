@@ -1,48 +1,57 @@
 #include <stdio.h>
 #include <limits.h>
 
-#define V 5  // Number of vertices in the graph
+#define NUM_VERTICES 5  // Number of vertices in the graph
 
-int minDistance(int dist[], int sptSet[]) {
-    int min = INT_MAX, min_index;
-    for (int v = 0; v < V; v++) {
-        if (sptSet[v] == 0 && dist[v] <= min) {
-            min = dist[v], min_index = v;
+int findMinDistanceVertex(int distance[], int visited[]) {
+    int minDistance = INT_MAX, minVertex;
+    for (int vertex = 0; vertex < NUM_VERTICES; vertex++) {
+        if (visited[vertex] == 0 && distance[vertex] <= minDistance) {
+            minDistance = distance[vertex];
+            minVertex = vertex;
         }
     }
-    return min_index;
+    return minVertex;
 }
 
-void dijkstra(int graph[V][V], int src) {
-    int dist[V];
-    int sptSet[V];
+void dijkstra(int graph[NUM_VERTICES][NUM_VERTICES], int sourceVertex) {
+    int distance[NUM_VERTICES];
+    int visited[NUM_VERTICES];
 
-    for (int i = 0; i < V; i++) {
-        dist[i] = INT_MAX;
-        sptSet[i] = 0;
+    // Initialize all distances as infinite and visited as false
+    for (int i = 0; i < NUM_VERTICES; i++) {
+        distance[i] = INT_MAX;
+        visited[i] = 0;
     }
 
-    dist[src] = 0;
+    // Distance from source to itself is always 0
+    distance[sourceVertex] = 0;
 
-    for (int count = 0; count < V - 1; count++) {
-        int u = minDistance(dist, sptSet);
-        sptSet[u] = 1;
+    // Find shortest path for all vertices
+    for (int count = 0; count < NUM_VERTICES - 1; count++) {
+        int currentVertex = findMinDistanceVertex(distance, visited);
+        visited[currentVertex] = 1;
 
-        for (int v = 0; v < V; v++) {
-            if (!sptSet[v] && graph[u][v] && dist[u] != INT_MAX && dist[u] + graph[u][v] < dist[v]) {
-                dist[v] = dist[u] + graph[u][v];
+        // Update distance values of adjacent vertices
+        for (int adjacentVertex = 0; adjacentVertex < NUM_VERTICES; adjacentVertex++) {
+            if (!visited[adjacentVertex] && graph[currentVertex][adjacentVertex] && 
+                distance[currentVertex] != INT_MAX && 
+                distance[currentVertex] + graph[currentVertex][adjacentVertex] < distance[adjacentVertex]) {
+                distance[adjacentVertex] = distance[currentVertex] + graph[currentVertex][adjacentVertex];
             }
         }
     }
 
-    printf("Vertex \t Distance from Source %d\n", src);
-    for (int i = 0; i < V; i++) {
-        printf("%d \t\t %d\n", i, dist[i]);
+    // Print the shortest distances
+    printf("Vertex \t Distance from Source %d\n", sourceVertex);
+    for (int i = 0; i < NUM_VERTICES; i++) {
+        printf("%d \t\t %d\n", i, distance[i]);
     }
 }
 
 int main() {
-    int graph[V][V] = {
+    // Adjacency matrix representation of the graph
+    int graph[NUM_VERTICES][NUM_VERTICES] = {
         {0, 10, 0, 0, 5},
         {0, 0, 1, 0, 2},
         {0, 0, 0, 4, 0},
