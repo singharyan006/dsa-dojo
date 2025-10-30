@@ -1,52 +1,62 @@
 #include <stdio.h>
 #include <limits.h>
 
-#define V 5
+#define NUM_VERTICES 5
 
-int minKey(int key[], int mstSet[]) {
-    int min = INT_MAX, min_index;
-    for (int v = 0; v < V; v++) {
-        if (mstSet[v] == 0 && key[v] < min) {
-            min = key[v];
-            min_index = v;
+int findMinKeyVertex(int edgeWeight[], int includedInMST[]) {
+    int minWeight = INT_MAX, minVertex;
+    for (int vertex = 0; vertex < NUM_VERTICES; vertex++) {
+        if (includedInMST[vertex] == 0 && edgeWeight[vertex] < minWeight) {
+            minWeight = edgeWeight[vertex];
+            minVertex = vertex;
         }
     }
-    return min_index;
+    return minVertex;
 }
 
-void prim(int graph[V][V]) {
-    int parent[V];
-    int key[V];
-    int mstSet[V];
+void prim(int graph[NUM_VERTICES][NUM_VERTICES]) {
+    int parent[NUM_VERTICES];           // Array to store constructed MST
+    int edgeWeight[NUM_VERTICES];       // Key values used to pick minimum weight edge
+    int includedInMST[NUM_VERTICES];    // To track vertices included in MST
 
-    for (int i = 0; i < V; i++) {
-        key[i] = INT_MAX;
-        mstSet[i] = 0;
+    // Initialize all keys as infinite and MST set as empty
+    for (int i = 0; i < NUM_VERTICES; i++) {
+        edgeWeight[i] = INT_MAX;
+        includedInMST[i] = 0;
     }
 
-    key[0] = 0;    
-    parent[0] = -1;
+    // Start with first vertex - make key 0 so it's picked first
+    edgeWeight[0] = 0;    
+    parent[0] = -1;  // First node is always root of MST
 
-    for (int count = 0; count < V - 1; count++) {
-        int u = minKey(key, mstSet);
-        mstSet[u] = 1;
+    // The MST will have NUM_VERTICES vertices
+    for (int count = 0; count < NUM_VERTICES - 1; count++) {
+        // Pick the minimum key vertex not yet included in MST
+        int currentVertex = findMinKeyVertex(edgeWeight, includedInMST);
+        includedInMST[currentVertex] = 1;
 
-        for (int v = 0; v < V; v++) {
-            if (graph[u][v] && mstSet[v] == 0 && graph[u][v] < key[v]) {
-                parent[v] = u;
-                key[v] = graph[u][v];
+        // Update key values and parent index of adjacent vertices
+        for (int adjacentVertex = 0; adjacentVertex < NUM_VERTICES; adjacentVertex++) {
+            // Update only if: edge exists, vertex not in MST, and weight is smaller than current key
+            if (graph[currentVertex][adjacentVertex] && 
+                includedInMST[adjacentVertex] == 0 && 
+                graph[currentVertex][adjacentVertex] < edgeWeight[adjacentVertex]) {
+                parent[adjacentVertex] = currentVertex;
+                edgeWeight[adjacentVertex] = graph[currentVertex][adjacentVertex];
             }
         }
     }
 
+    // Print the constructed MST
     printf("Edge \tWeight\n");
-    for (int i = 1; i < V; i++) {
+    for (int i = 1; i < NUM_VERTICES; i++) {
         printf("%d - %d \t%d\n", parent[i], i, graph[i][parent[i]]);
     }
 }
 
 int main() {
-    int graph[V][V] = {
+    // Adjacency matrix representation of the graph (undirected weighted graph)
+    int graph[NUM_VERTICES][NUM_VERTICES] = {
         {0, 2, 0, 6, 0},
         {2, 0, 3, 8, 5},
         {0, 3, 0, 0, 7},
